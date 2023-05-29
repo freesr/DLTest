@@ -53,5 +53,19 @@ const mockedData = {
     ],
   };
   
+
+  function updateMockData() {
+    mockedData.rtus.forEach((rtu) => {
+      rtu.points.forEach((point) => {
+        // Update the value and timestamp of each point
+        point.value = Math.random() * 100; // Update with your own logic
+        point.timestamp = new Date().toISOString();
+      });
+    });
+  }
+  
+  // Update the mock data every 10 seconds
+  setInterval(updateMockData, 10000);
+
   module.exports = mockedData;
   

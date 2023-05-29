@@ -8,6 +8,8 @@ function getRTUs() {
   // Function to get the points associated with an RTU
   function getPointsByRTU(rtuName) {
     const foundRTU = mockedData.rtus.find((rtu) => rtu.name === rtuName);
+    console.log("vikad" + foundRTU);
+
     return foundRTU ? foundRTU.points : [];
   }
   
