@@ -1,0 +1,70 @@
+html
+  head
+    title SCADA API Client
+
+  body
+    h1 SCADA API Client
+    form(action="/rtus" method="GET")
+      h2 Get List of RTUs
+      button(type="submit") Get RTUs
+
+    form(action="/points" method="POST")
+      h2 Get Points by RTU
+      label(for="rtuName") RTU Name:
+      input(type="text" id="rtuName" name="rtuName")
+      button(type="submit") Get Points
+
+    form(action="/pointCount" method="POST")
+      h2 Get Point Count by RTU
+      label(for="rtuName") RTU Name:
+      input(type="text" id="rtuName" name="rtuName")
+      button(type="submit") Get Point Count
+
+    form(action="/pointValue" method="POST")
+      h2 Get Point Value
+      label(for="rtuName") RTU Name:
+      input(type="text" id="rtuName" name="rtuName")
+      label(for="pointName") Point Name:
+      input(type="text" id="pointName" name="pointName")
+      button(type="submit") Get Point Value
+
+    form(action="/lastValueChange" method="POST")
+      h2 Get Last Value Change Timestamp
+      label(for="rtuName") RTU Name:
+      input(type="text" id="rtuName" name="rtuName")
+      label(for="pointName") Point Name:
+      input(type="text" id="pointName" name="pointName")
+      button(type="submit") Get Last Value Change
+
+    div.response-container
+      label(for="responseArea") Results:
+      div#responseArea  
+
+  script.
+    const formElements = document.querySelectorAll('form');
+    formElements.forEach((form) => {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const url = form.action;
+        console.log(url);
+        const params = new URLSearchParams(formData).toString();
+        const request = new XMLHttpRequest();
+        if(url.includes('/rtus')){
+          request.open('GET', `${url}?${params}`);
+        }else{
+           request.open('POST', url);
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        request.setRequestHeader('apikey', 'vikas');
+        request.onload = function () {
+          if (request.status === 200) {
+            const response = JSON.parse(request.responseText);
+            responseArea.innerText = JSON.stringify(response, null, 2);
+          } else {
+            responseArea.innerText = `Error: ${request.statusText}`;
+          }
+        };
+        request.send(params);
+      });
+    });
