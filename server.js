@@ -2,11 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const scadaApi = require('./Controller/scadapoints');
 const mockedData = require('./model/mockeddata');
-
+require('dotenv').config();
 
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT;
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -19,7 +19,7 @@ function authenticate(req, res, next) {
 
   // Check the client's API key
   // Replace 'YOUR_API_KEY' with your actual API key
-  if (apikey && apikey === 'vikas') {
+  if (apikey && apikey === process.env.API_KEY) {
     next(); // Authentication succeeded
   } else {
     res.status(401).json({ error: 'Unauthorized' }); // Authentication failed
